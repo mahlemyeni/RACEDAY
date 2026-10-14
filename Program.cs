@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RaceDay.Data;
+using RaceDay.Models.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-//builder.Services.Add.Scoped<IProfileImageService, ProfileImageService>();
+builder.Services.AddScoped<IProfileImageService, ProfileImageService>();
 
 builder.Services.AddControllersWithViews();
 
@@ -37,13 +38,13 @@ using (var scope = app.Services.CreateScope())
        }
     }
 
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
     string email = "admin@gmail.com";
     string password = "Admin@123";
 
     if (await userManager.FindByEmailAsync(email) == null)
     {
-        var user = new IdentityUser();
+        var user = new ApplicationUser();
 
         user.UserName = email;
         user.Email = email;
@@ -68,6 +69,7 @@ if (app.Environment.IsDevelopment())
     }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
