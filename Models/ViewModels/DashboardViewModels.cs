@@ -1,5 +1,5 @@
 using RaceDay.Models;
-using RunWayy.Models;
+using RaceDay.Models;
 
 namespace RaceDay.Models.ViewModels;
 

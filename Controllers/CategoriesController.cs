@@ -7,7 +7,7 @@ using RaceDay.Models;
 
 namespace EventManagement.Controllers;
 
-[Authorize(Roles = "Admin,Organiser,Participant")]
+[Authorize]
 public class CategoriesController : Controller
 {
     private readonly ApplicationDbContext _db;

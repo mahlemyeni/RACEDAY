@@ -11,7 +11,7 @@ using RaceDay.Models.ViewModels;
 
 namespace RaceDay.Controllers;
 
-[Authorize(Roles = "Admin,Organiser,Participant")]
+[Authorize]
 public class EnrolmentsController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -24,7 +24,7 @@ public class EnrolmentsController : Controller
     }
 
     // Participant: enter an event by choosing a category
-    [Authorize(Roles = "Admin,Organiser,Participant")]
+    [Authorize(Roles = "Participant")]
     public async Task<IActionResult> Create(int eventId)
     {
         var ev = await _db.Events.Include(e => e.Categories).AsNoTracking()
@@ -42,7 +42,7 @@ public class EnrolmentsController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin,Organiser,Participant")]
+    [Authorize(Roles = "Participant")]
     public async Task<IActionResult> Create(EnrolViewModel model)
     {
         var ev = await _db.Events.Include(e => e.Categories).AsNoTracking()
@@ -76,7 +76,7 @@ public class EnrolmentsController : Controller
     }
 
     // Participant: my enrolments
-    [Authorize(Roles = "Admin,Organiser,Participant")]
+    [Authorize(Roles = "Participant")]
     public async Task<IActionResult> My()
     {
         var userId = _users.GetUserId(User);
@@ -93,7 +93,7 @@ public class EnrolmentsController : Controller
 
     // Participant: withdraw (only before the event and before a result exists)
     [HttpPost, ValidateAntiForgeryToken]
-    [Authorize(Roles = "Admin,Organiser,Participant")]
+    [Authorize(Roles = "Participant")]
     public async Task<IActionResult> Withdraw(int id)
     {
         var userId = _users.GetUserId(User);
@@ -115,7 +115,7 @@ public class EnrolmentsController : Controller
     }
 
     // Organiser: all enrolments for one of THEIR events
-    [Authorize(Roles = "Admin,Organiser,Participant")]
+    [Authorize(Roles = "Admin,Organiser")]
     public async Task<IActionResult> ForEvent(int eventId)
     {
         var userId = _users.GetUserId(User);

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RaceDay.Controllers;
 
-[Authorize(Roles = "Admin,Organiser,Participant")]
+[Authorize]
 public class EventsController : Controller
 {
     private readonly ApplicationDbContext _db;

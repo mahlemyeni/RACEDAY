@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace RaceDay.Controllers;
 
-[Authorize(Roles = "Admin,Organiser")]
+[Authorize]
 public class ResultsController : Controller
 {
     private readonly ApplicationDbContext _db;
@@ -126,7 +126,7 @@ public class ResultsController : Controller
     }
 
     // Participant: my own results only
-    [Authorize(Roles = "Admin,Organiser")]
+    [Authorize(Roles = "Participant")]
     public async Task<IActionResult> My()
     {
         var userId = _users.GetUserId(User);
