@@ -266,7 +266,7 @@ namespace RaceDay.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("RaceDay.Models.Enrolment", b =>
@@ -298,7 +298,7 @@ namespace RaceDay.Migrations
 
                     b.HasIndex("ParticipantId");
 
-                    b.ToTable("Enrolments", (string)null);
+                    b.ToTable("Enrolments");
                 });
 
             modelBuilder.Entity("RaceDay.Models.Event", b =>
@@ -342,7 +342,7 @@ namespace RaceDay.Migrations
 
                     b.HasIndex("OrganiserId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("RaceDay.Models.Result", b =>
@@ -370,7 +370,7 @@ namespace RaceDay.Migrations
                     b.HasIndex("EnrolmentId")
                         .IsUnique();
 
-                    b.ToTable("Results", (string)null);
+                    b.ToTable("Results");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
