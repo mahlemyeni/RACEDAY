@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using RaceDay.Data;
 using RaceDay.Models;
 
-namespace EventManagement.Controllers;
+namespace RaceDay.Controllers;
 
 [Authorize]
 public class CategoriesController : Controller
