@@ -115,7 +115,7 @@ public class EnrolmentsController : Controller
     }
 
     // Organiser: all enrolments for one of THEIR events
-    [Authorize(Roles = "Admin,Organiser")]
+    [Authorize(Roles = "Organiser")]
     public async Task<IActionResult> ForEvent(int eventId)
     {
         var userId = _users.GetUserId(User);
