@@ -6,9 +6,14 @@ using RaceDay.Models.Interface;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// FIXED: Look for the environment variable first (Docker), then fallback to appsettings.json (Local)
+var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -24,11 +29,30 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
 
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    // This will now safely apply migrations to the SQL Server container, not LocalDB
+
+        // Retry loop to wait for SQL Server to be ready
+        var retries = 10;
+        while (retries > 0)
+        {
+            try
+            {
+                db.Database.Migrate();
+                break; // Success! Exit the loop.
+            }
+            catch (Exception ex)
+            {
+                retries--;
+                Console.WriteLine($"Database not ready yet. Retrying in 5 seconds... ({retries} attempts left)");
+                if (retries == 0) throw; // If we run out of retries, crash the app.
+                Thread.Sleep(5000); // Wait 5 seconds before trying again
+            }
+        }
+
+
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var roles = new[] { "Admin", "Organiser", "Participant" };
 
     foreach (var role in roles)
@@ -54,7 +78,6 @@ using (var scope = app.Services.CreateScope())
         await userManager.CreateAsync(user, password);
         await userManager.AddToRoleAsync(user, "Admin");
     }
-
 }
 
 // Configure the HTTP request pipeline.
