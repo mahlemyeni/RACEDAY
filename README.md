@@ -1,65 +1,63 @@
-# RACEDAY
+# RaceDay Platform - Part 3 (MVC Web Application)
 
-RACEDAY is a Razor Pages web application targeting .NET 10. This repository contains the solution and source code for the web app.
+Welcome to the **RaceDay** platform! This is the final part of the project, a production-ready ASP.NET Core MVC Web Application. It acts as the frontend user interface that consumes the Part 2 RESTful API for all data operations, ensuring no direct database access or replicated business logic exists within this MVC project.
 
-## Prerequisites
+## 🚀 Features Implemented
 
-- .NET 10 SDK
-- Visual Studio 2026 (or later) with ASP.NET and web development workload
-- (Optional) pwsh / PowerShell for preferred terminal
+*   **Authentication & Role-Based Navigation:** Secure session-based login/registration. Dynamic navigation menus based on user roles (Organiser, Participant).
+*   **Organiser Interface:** Dashboard with event summaries, full CRUD operations for events (with banner uploads), category management, and result capturing.
+*   **Participant Interface:** Event browsing with filtering, seamless enrolment, personal status tracking, and historical race results.
+*   **Cloud Storage Integration:** Azure Blob Storage is integrated via the API for uploading and displaying event banner images.
+*   **Sporting UI Design:** A polished, responsive interface built with Bootstrap, featuring an energetic sporting theme, role-appropriate navigation, and color-coded statuses.
+*   **Dockerised Architecture:** Fully containerised using Docker Compose with a SQL Server database container and health checks for reliable startup.
 
-## Getting Started
+---
 
-1. Clone the repository (already cloned in this workspace):
-   - Remote: https://github.com/mahlemyeni/RACEDAY
-   - Local path in this workspace: `C:\Users\amahl\source\repos\RACEDAY`
+## 🛠️ Prerequisites
 
-2. Open the solution
-   - Visual Studio: `C:\Users\amahl\source\repos\RACEDAY\RACEDAY.slnx`
-   - Or from the terminal:
-     ```
-     cd C:\Users\amahl\source\repos\RACEDAY
-     dotnet restore
-     ```
+Before running this application, ensure you have the following installed:
+*   [.NET 10.0 SDK](https://dotnet.microsoft.com/download)
+*   [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Required for the containerised setup)
 
-3. Build and run
-   - Visual Studio: Press F5 or use Debug > Start Debugging
-   - CLI:
-     ```
-     dotnet build
-     dotnet run --project <PathToRazorProject>.csproj
-     ```
-   Replace `<PathToRazorProject>.csproj` with the actual project file name for the Razor Pages app.
+---
 
-4. Tests
-   - Run unit tests (if present):
-     ```
-     dotnet test
-     ```
+## 🐳 Docker Setup & Run Command
 
-## Configuration
+This application is fully containerised using Docker. It includes a multi-stage `Dockerfile` and a `docker-compose.yml` file to orchestrate the web application alongside a SQL Server 2022 database container.
 
-- App configuration files live in `appsettings.json` (and environment-specific variants).
-- Update connection strings, logging, and other settings there before running in different environments.
+### **How to start the application (Single Command):**
 
-## Project Structure (typical)
-
-- /Pages — Razor Pages UI and handlers
-- /wwwroot — static assets (css, js, images)
-- /Data — data access, DbContext (if EF is used)
-- /Tests — unit/integration tests (if present)
-
-Adjust based on the actual repository layout.
-
-## Contributing
-
-1. Create a branch for your change: `git checkout -b feature/your-feature`
-2. Commit and push to origin
-3. Open a pull request
-
-Follow repository coding standards and include tests where applicable.
+1. Ensure Docker Desktop is running on your machine.
+2. Open your terminal and navigate to the root directory of this repository (where the `docker-compose.yml` file is located).
+3. Run the following command to build and start the application:
 
 
-## Contact
+docker compose up --build
 
-Repository: https://github.com/mahlemyeni/RACEDAY
+### Once the containers are running, open your browser and navigate to: https://localhost:7119
+
+Default Admin Credentials:
+
+Email: admin@gmail.com
+
+Password: Admin@123
+
+To stop the application, press Ctrl+C in the terminal or run docker compose down.
+
+### 📂 Project Structure
+/Controllers - Handles HTTP requests and routes them to the appropriate API endpoints or Views.
+
+/Models - Contains ViewModels and DTOs used to transfer data between the MVC app and the API.
+
+/Views - Razor pages utilising Bootstrap for responsive, dynamic UI rendering.
+
+/Services - Contains HTTP clients and services used to communicate with the Part 2 API and Azure Blob Storage.
+
+Dockerfile - Multi-stage build for containerising the MVC app.
+
+docker-compose.yml - Defines the web app and SQL Server database services with health checks.
+
+🎥 Video Demonstration
+As required by the POE, a full video demonstration covering the MVC structure, API integration, Azure Blob Storage flow, and Docker setup can be found here:
+
+**YouTube link:** https://youtu.be/SBXgQhvVx-E 
